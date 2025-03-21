@@ -1,10 +1,26 @@
 services:
   frontend:
     init: true
-    build: .
-    image: mynodejs
-    container_name: hack
+    build: ./frontend
+    image: myreact
+    container_name: front
     ports:
       - "3000:3000"
     volumes:
-      - ./srcs:/myreact/src
+      - ./frontend/srcs:/myreact/src
+    networks:
+      - hack
+  backend:
+    init: true
+    build: ./backend
+    image: mynodejs
+    container_name: back
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend/srcs:/srcs
+    networks:
+      - hack
+
+networks:
+  hack:

@@ -8,4 +8,6 @@ RUN chmod +x /usr/bin/entrypoint.sh
 
 WORKDIR /myreact
 
+COPY ./index.html ./public
+
 ENTRYPOINT [ "entrypoint.sh" ]
