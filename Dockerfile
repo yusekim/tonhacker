@@ -8,6 +8,4 @@ RUN chmod +x /usr/bin/entrypoint.sh
 
 WORKDIR /myreact
 
-#CMD [ "npm", "start" ]
-
 ENTRYPOINT [ "entrypoint.sh" ]
