@@ -1,0 +1,10 @@
+services:
+  frontend:
+    init: true
+    build: .
+    image: test
+    container_name: hack
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./srcs:/srcs
