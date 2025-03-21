@@ -20,42 +20,45 @@ function DeliveryApp() {
     lat: 37.583191,
   	lng: 127.060380,
   };
-
   useEffect(() => {
-    if (screen === 3 && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
-        const d = getDistanceFromLatLonInMeters(
-          userLat,
-          userLng,
-          recipientLocation.lat,
-          recipientLocation.lng
-        );
-        setDistance(Math.round(d));
-      });
-    }
+	// Clean up previous map instance before initializing a new one.
+	if (mapInstance.current) {
+	  mapInstance.current.destroy();
+	  mapInstance.current = null;
+	}
 
-    if (screen === 2 && navigator.geolocation && mapRef.current) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
+	if (screen === 3 && navigator.geolocation) {
+	  navigator.geolocation.getCurrentPosition((position) => {
+		const userLat = position.coords.latitude;
+		const userLng = position.coords.longitude;
+		const d = getDistanceFromLatLonInMeters(
+		  userLat,
+		  userLng,
+		  recipientLocation.lat,
+		  recipientLocation.lng
+		);
+		setDistance(Math.round(d));
+	  });
+	}
 
-        const mapCenter = new naver.maps.LatLng(userLat, userLng);
-        mapInstance.current = new naver.maps.Map(mapRef.current, {
-          center: mapCenter,
-          zoom: 15,
-        });
+	if (screen === 2 && navigator.geolocation && mapRef.current) {
+	  navigator.geolocation.getCurrentPosition((position) => {
+		const userLat = position.coords.latitude;
+		const userLng = position.coords.longitude;
+		const mapCenter = new naver.maps.LatLng(userLat, userLng);
+		mapInstance.current = new naver.maps.Map(mapRef.current, {
+		  center: mapCenter,
+		  zoom: 15,
+		});
 
-        new naver.maps.Marker({
-          position: mapCenter,
-          map: mapInstance.current,
-        });
+		new naver.maps.Marker({
+		  position: mapCenter,
+		  map: mapInstance.current,
+		});
 
-	  fetch(`http://localhost:4000/api/directions?startLng=${userLng}&startLat=${userLat}&goalLng=${recipientLocation.lng}&goalLat=${recipientLocation.lat}`)
+		fetch(`http://localhost:4000/api/directions?startLng=${userLng}&startLat=${userLat}&goalLng=${recipientLocation.lng}&goalLat=${recipientLocation.lat}`)
 		  .then(res => res.json())
 		  .then(data => {
-			console.log('API 응답:', data.route);
 			const route = data.route.traoptimal[0].path.map(
 			  point => new naver.maps.LatLng(point[1], point[0])
 			);
@@ -67,31 +70,60 @@ function DeliveryApp() {
 			});
 		  })
 		  .catch(err => console.error(err));
+	  });
+	}
 
+	// New block for screen 4: Display return route.
+	if (screen === 4 && navigator.geolocation && mapRef.current) {
+	  navigator.geolocation.getCurrentPosition((position) => {
+		const userLat = position.coords.latitude;
+		const userLng = position.coords.longitude;
 
-      });
-    }
+		// Define start as the recipient's location and destination as the user's current location.
+		const startPoint = new naver.maps.LatLng(recipientLocation.lat, recipientLocation.lng);
+		const destination = new naver.maps.LatLng(userLat, userLng);
 
-    if (screen === 5 && mapRef.current) {
-      const mapCenter = new naver.maps.LatLng(37.6020, 127.0419);
+		// Initialize map centered at the recipient's location.
+		mapInstance.current = new naver.maps.Map(mapRef.current, {
+		  center: startPoint,
+		  zoom: 15,
+		});
 
-      mapInstance.current = new naver.maps.Map(mapRef.current, {
-        center: mapCenter,
-        zoom: 17,
-      });
+		// Place a marker on the recipient's location.
+		new naver.maps.Marker({
+		  position: startPoint,
+		  map: mapInstance.current,
+		});
 
-      new naver.maps.Marker({
-        position: mapCenter,
-        map: mapInstance.current,
-      });
-    }
+		// Fetch the return route (reverse the coordinates compared to screen 2).
+		fetch(`http://localhost:4000/api/directions?startLng=${recipientLocation.lng}&startLat=${recipientLocation.lat}&goalLng=${userLng}&goalLat=${userLat}`)
+		  .then(res => res.json())
+		  .then(data => {
+			const route = data.route.traoptimal[0].path.map(
+			  point => new naver.maps.LatLng(point[1], point[0])
+			);
+			new naver.maps.Polyline({
+			  map: mapInstance.current,
+			  path: route,
+			  strokeColor: "#5347AA",
+			  strokeWeight: 5,
+			});
+		  })
+		  .catch(err => console.error(err));
+	  });
+	}
 
-    return () => {
-      if (mapInstance.current) {
-        mapInstance.current.destroy();
-        mapInstance.current = null;
-      }
-    };
+	if (screen === 5 && mapRef.current) {
+	  const mapCenter = new naver.maps.LatLng(37.6020, 127.0419);
+	  mapInstance.current = new naver.maps.Map(mapRef.current, {
+		center: mapCenter,
+		zoom: 17,
+	  });
+	  new naver.maps.Marker({
+		position: mapCenter,
+		map: mapInstance.current,
+	  });
+	}
   }, [screen]);
 
   function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
@@ -136,15 +168,22 @@ function DeliveryApp() {
           </div>
         );
       case 3:
-        return (
-          <div className="content">
+		  return (
+			  <div className="content">
             <h2 className="delivery-title">수령인 거리 확인</h2>
             <p className="info-text">
               {distance !== null ? `남은 거리: ${distance}m` : "위치 정보를 가져오는 중..."}
             </p>
-            <button className="action-button" onClick={resetToHome}>
+            <button className="action-button" onClick={() => setScreen(4)}>
               배달 완료
             </button>
+          </div>
+        );
+		case 4:
+			return (
+			<div className="map-content">
+            <h2 className="delivery-title">복귀 경로</h2>
+			  <div ref={mapRef} style={{ width: "100%", height: "400px" }} />
           </div>
         );
       default:
@@ -162,6 +201,12 @@ function DeliveryApp() {
     if (screen === 2) {
       centerButton = (
         <button className="action-button" onClick={() => setScreen(3)}>
+          도착
+        </button>
+      );
+    } else if (screen === 4) {
+      centerButton = (
+        <button className="action-button" onClick={resetToHome}>
           도착
         </button>
       );
