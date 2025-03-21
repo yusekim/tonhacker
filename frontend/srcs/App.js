@@ -8,6 +8,12 @@ function DeliveryApp() {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
 
+  const resetToHome = () => {
+    setDistance(null);
+    setScreen(1);
+  };
+
+
 // 일단 하드코딩
 // 서울시립대 정보기술관
   const recipientLocation = {
@@ -136,7 +142,7 @@ function DeliveryApp() {
             <p className="info-text">
               {distance !== null ? `남은 거리: ${distance}m` : "위치 정보를 가져오는 중..."}
             </p>
-            <button className="action-button" onClick={() => setScreen(4)}>
+            <button className="action-button" onClick={resetToHome}>
               배달 완료
             </button>
           </div>
@@ -146,10 +152,45 @@ function DeliveryApp() {
     }
   };
 
+  /**
+   * 하단 네비게이션 영역
+   * (메뉴얼, 매장 연락 버튼은 항상 고정하고,
+   *  화면 2/5일 때 중앙 버튼 표시)
+   */
+  const renderFooter = () => {
+    let centerButton = null;
+    if (screen === 2) {
+      centerButton = (
+        <button className="action-button" onClick={() => setScreen(3)}>
+          도착
+        </button>
+      );
+    } else if (screen === 5) {
+      centerButton = (
+        <button className="action-button" onClick={resetToHome}>
+          홈으로
+        </button>
+      );
+    }
+
+    return (
+      <div className="footer">
+        <div className="footer-left">
+          <button className="action-button">매뉴얼</button>
+        </div>
+        <div className="footer-center">{centerButton}</div>
+        <div className="footer-right">
+          <button className="action-button">매장 연락</button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="app-frame">
       <div className="delivery-container">
         {renderContent()}
+        {renderFooter()}
       </div>
     </div>
   );
