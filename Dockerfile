@@ -1,7 +1,13 @@
 FROM alpine:latest
 
 RUN apk --update add nodejs npm git build-base python3
-RUN npx create-react-app my-react-app --yes --no-git
-WORKDIR /my-react-app
+RUN npx create-react-app myreact --yes --no-git
 
-CMD [ "npm", "start" ]
+COPY ./entrypoint.sh /usr/bin/entrypoint.sh
+RUN chmod +x /usr/bin/entrypoint.sh
+
+WORKDIR /myreact
+
+#CMD [ "npm", "start" ]
+
+ENTRYPOINT [ "entrypoint.sh" ]
