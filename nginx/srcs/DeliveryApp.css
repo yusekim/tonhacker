@@ -1,0 +1,158 @@
+/* 스마트폰 앱 프레임: 전체 배경 및 중앙 정렬 */
+.app-frame {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	background-color: #f0f2f5;
+	padding: 20px;
+  }
+.delivery-container {
+	/* 이미 세로 배치이므로 flex-direction: column 사용 */
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 375px;
+	height: 667px;
+	background-color: #fff;
+	border-radius: 20px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	/* position: relative; (필요에 따라 사용) */
+	/* overflow: hidden; (스크롤 처리를 위해 상황에 따라 제거/유지) */
+}
+
+.content,
+.map-content {
+	/* 내용 영역이 남은 공간을 차지하도록 */
+	flex: 1;
+	overflow-y: auto; /* 스크롤이 필요한 경우 */
+	padding: 16px;
+}
+
+/* 하단 버튼 영역 */
+.footer {
+	/* 자동으로 위 영역을 밀어내도록 */
+	margin-top: auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px;
+	border-top: 1px solid #ccc;
+	background-color: #fff;
+	border-radius: 20px;
+}
+
+/* 일반 content 영역 (스크롤 가능) */
+.content {
+	padding: 16px;
+	overflow-y: auto;
+}
+
+/* map-content 영역: 지도 영역이 전체의 대부분을 차지 */
+.map-content {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	padding: 16px;
+}
+
+.delivery-title {
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin-bottom: 16px;
+  }
+
+/* ★ 더 작은 카드 크기 (주문정보 칸 축소) ★ */
+.small-card {
+	height: 100px; /* 카드 너비 축소 */
+}
+
+.small-card-content {
+	display: flex;         /* 버튼을 우측에 두기 위해 가로배치 */
+	align-items: center;
+	justify-content: space-between;
+	padding: 8px;
+}
+
+
+/* 카드 스타일 */
+.card {
+	border: 1px solid #ccc;
+	border-radius: 8px;
+}
+
+  /* 지도 영역: content 내부에서 여유 공간을 모두 차지 */
+  .map-placeholder {
+	flex: 1;
+	background-color: #e2e8f0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 8px;
+  }
+
+  /* 버튼 스타일 */
+  .action-button {
+	padding: 10px 16px;
+	border: none;
+	background-color: #007bff;
+	color: white;
+	cursor: pointer;
+	border-radius: 4px;
+	transition: background-color 0.2s ease;
+	font-size: 1rem;
+  }
+
+  .action-button:hover {
+	background-color: #0056b3;
+  }
+
+  /* 버튼 그룹 (예: 화면 4) */
+  .button-group {
+	display: flex;
+	gap: 16px;
+	margin-top: 8px;
+  }
+
+  /* 아웃라인 버튼 스타일 */
+  .outline {
+	background-color: white;
+	border: 1px solid #ccc;
+	color: #333;
+  }
+
+  .footer button {
+	flex: 1;
+	margin: 0 8px;
+  }
+
+  /* 추가 여백이 필요하면 .center-btn에 개별 스타일 적용 가능 */
+  .center-btn {
+	/* 예: 특별한 배경이나 크기 지정 가능 */
+  }
+
+  .info-text {
+	font-size: 1.125rem;
+	margin-bottom: 16px;
+  }
+/* DeliveryApp.css */
+
+.manual-modal {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 80px; /* .footer의 높이와 동일하게 설정 */
+	display: flex;
+	z-index: 100; /* 다른 요소들 위에 표시 */
+  }
+
+  .manual-content {
+	background: #fff;
+	padding: 20px;
+	border-radius: 20px;
+  }
+
+  .manual-content h2 {
+	margin-top: 0;
+  }

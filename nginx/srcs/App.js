@@ -131,7 +131,7 @@ function DeliveryApp() {
 				}
 
 				fetch(
-					`http://backend:4000/api/directions?startLng=${userLng}&startLat=${userLat}&goalLng=${recipientLocation.lng}&goalLat=${recipientLocation.lat}`
+					`/api/directions?startLng=${userLng}&startLat=${userLat}&goalLng=${recipientLocation.lng}&goalLat=${recipientLocation.lat}`
 				)
 					.then((res) => res.json())
 					.then((data) => {
@@ -188,7 +188,7 @@ function DeliveryApp() {
 				}
 
 				fetch(
-					`http://backend:4000/api/directions?startLng=${userLng}&startLat=${userLat}&goalLng=${freewhaleLocation.lng}&goalLat=${freewhaleLocation.lat}`
+					`/api/directions?startLng=${userLng}&startLat=${userLat}&goalLng=${recipientLocation.lng}&goalLat=${recipientLocation.lat}`
 				)
 					.then((res) => res.json())
 					.then((data) => {

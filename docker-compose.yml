@@ -1,25 +1,25 @@
 services:
   frontend:
     init: true
-    build: ./frontend
+    build: ./nginx
     image: myreact
     container_name: front
     ports:
-      - "3000:3000"
+      - "3000:80"
     environment:
       CLIENT_KEY: ${CLIENT_KEY}
       CLIENT_SECRET: ${CLIENT_SECRET}
     volumes:
-      - ./frontend/srcs:/myreact/src
+      - ./nginx/srcs:/myreact/src
     networks:
       - hack
+    depends_on:
+      - backend
   backend:
     init: true
     build: ./backend
     image: mynodejs
     container_name: back
-    ports:
-      - "4000:4000"
     environment:
       CLIENT_KEY: ${CLIENT_KEY}
       CLIENT_SECRET: ${CLIENT_SECRET}
