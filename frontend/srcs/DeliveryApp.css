@@ -7,8 +7,9 @@
 	background-color: #f0f2f5;
 	padding: 20px;
   }
-  .delivery-container {
+.delivery-container {
 	/* 이미 세로 배치이므로 flex-direction: column 사용 */
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	width: 375px;
@@ -80,10 +81,6 @@
 	border-radius: 8px;
 }
 
-.card-content {
-
-}
-
   /* 지도 영역: content 내부에서 여유 공간을 모두 차지 */
   .map-placeholder {
 	flex: 1;
@@ -137,4 +134,25 @@
   .info-text {
 	font-size: 1.125rem;
 	margin-bottom: 16px;
+  }
+/* DeliveryApp.css */
+
+.manual-modal {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 80px; /* .footer의 높이와 동일하게 설정 */
+	display: flex;
+	z-index: 100; /* 다른 요소들 위에 표시 */
+  }
+
+  .manual-content {
+	background: #fff;
+	padding: 20px;
+	border-radius: 20px;
+  }
+
+  .manual-content h2 {
+	margin-top: 0;
   }
