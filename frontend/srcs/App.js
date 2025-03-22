@@ -163,7 +163,7 @@ function DeliveryApp() {
 				}
 
 				fetch(
-					`http://localhost:4000/api/directions?startLng=${freewhaleLocation.lng}&startLat=${freewhaleLocation.lat}&goalLng=${userLng}&goalLat=${userLat}`
+					`http://localhost:4000/api/directions?startLng=${userLng}&startLat=${userLat}&goalLng=${freewhaleLocation.lng}&goalLat=${freewhaleLocation.lat}`
 				)
 					.then((res) => res.json())
 					.then((data) => {
