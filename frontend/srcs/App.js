@@ -2,6 +2,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./DeliveryApp.css";
 
+const naverClientKEY = window.__CONFIG__.naverClientKEY;
+
 function DeliveryApp() {
 	const [screen, setScreen] = useState(1);
 	const [distance, setDistance] = useState(null);
@@ -33,6 +35,29 @@ function DeliveryApp() {
 		}
 		action();
 	};
+
+	useEffect(() => {
+		if (!window.naver) {
+			const script = document.createElement("script");
+			script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${window.__CONFIG__.naverClientKEY}`;
+			script.async = true;
+			document.head.appendChild(script);
+
+			script.onload = () => {
+				console.log("네이버 지도 로딩 완료");
+				// 여기서 지도 초기화 가능
+			};
+
+			script.onerror = () => {
+				console.error("네이버 지도 로딩 실패");
+			};
+
+			return () => {
+				document.head.removeChild(script);
+			};
+		}
+	}, []);
+
 
 	// 해시를 이용하여 화면 전환을 처리하는 로직
 	useEffect(() => {

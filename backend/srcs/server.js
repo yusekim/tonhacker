@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 import fetch from 'node-fetch';
@@ -15,8 +18,8 @@ app.get("/api/directions", async (req, res) => {
 
     const response = await fetch(url, {
       headers: {
-        "X-NCP-APIGW-API-KEY-ID": "lltog00aqz",
-        "X-NCP-APIGW-API-KEY": "Rr0anVaK0O7Qx1rjKgbZx7FmnK6giy2jmMutDizB",
+        "X-NCP-APIGW-API-KEY-ID": process.env.CLIENT_KEY,
+        "X-NCP-APIGW-API-KEY": process.env.CLIENT_SECRET,
       },
     });
 

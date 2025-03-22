@@ -6,6 +6,9 @@ services:
     container_name: front
     ports:
       - "3000:3000"
+    environment:
+      CLIENT_KEY: ${CLIENT_KEY}
+      CLIENT_SECRET: ${CLIENT_SECRET}
     volumes:
       - ./frontend/srcs:/myreact/src
     networks:
@@ -17,6 +20,9 @@ services:
     container_name: back
     ports:
       - "4000:4000"
+    environment:
+      CLIENT_KEY: ${CLIENT_KEY}
+      CLIENT_SECRET: ${CLIENT_SECRET}
     volumes:
       - ./backend/srcs:/srcs
     networks:
