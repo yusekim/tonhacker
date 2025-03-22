@@ -192,6 +192,7 @@ function DeliveryApp() {
 				)
 					.then((res) => res.json())
 					.then((data) => {
+						console.log(data);
 						const route = data.route.traoptimal[0].path.map(
 							(point) => new naver.maps.LatLng(point[1], point[0])
 						);
