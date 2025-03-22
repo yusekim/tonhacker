@@ -131,7 +131,7 @@ function DeliveryApp() {
 				}
 
 				fetch(
-					`/api/directions?startLng=${userLng}&startLat=${userLat}&goalLng=${recipientLocation.lng}&goalLat=${recipientLocation.lat}`
+					`http://backend:4000/api/directions?startLng=${userLng}&startLat=${userLat}&goalLng=${recipientLocation.lng}&goalLat=${recipientLocation.lat}`
 				)
 					.then((res) => res.json())
 					.then((data) => {
@@ -188,11 +188,10 @@ function DeliveryApp() {
 				}
 
 				fetch(
-					`/api/directions?startLng=${userLng}&startLat=${userLat}&goalLng=${recipientLocation.lng}&goalLat=${recipientLocation.lat}`
+					`http://backend:4000/api/directions?startLng=${userLng}&startLat=${userLat}&goalLng=${freewhaleLocation.lng}&goalLat=${freewhaleLocation.lat}`
 				)
 					.then((res) => res.json())
 					.then((data) => {
-						console.log(data);
 						const route = data.route.traoptimal[0].path.map(
 							(point) => new naver.maps.LatLng(point[1], point[0])
 						);
@@ -263,11 +262,16 @@ function DeliveryApp() {
 			<div className="manual-modal">
 			<div className="manual-content">
 			<h2>느린학습자 배달원 행동 수칙</h2>
-			<ul>
-			<li>주문자에게 정중하게 인사합니다.</li>
-			<li>주문 내역을 확인하고 정확한 위치를 점검합니다.</li>
-			<li>배달 시 안전에 유의하며, 주변을 살핍니다.</li>
-			<li>문제 발생 시 매장 연락 버튼을 눌러 지원을 요청합니다.</li>
+			<ul style={{ listStyleType: "none", padding: 0 }}>
+			<li>배달 목적지에 도착하면 주문자가 있는지 먼저 살펴봅니다.</li>
+			<li>이어서 본인을 소개합니다. 예를 들어:</li>
+			<li>예시 멘트: "안녕하세요, 프리웨일입니다."</li>
+			<li>주문자에게 주문 번호나 주문 내역을 확인할 수 있도록 멘트를 추가합니다.</li>
+			<li>예시 멘트: "주문번호 xx번, 맞으신가요?".</li>
+			<li>전달이 무사히 완료되면 다음의 멘트를 하고 카페로 복귀합니다.</li>
+			<li>예시 멘트: "감사합니다 맛있게 드세요!"</li>
+			<li>문제가 해결되지 않거나 주문자와 연락이 닿지 않을 경우, “매장 연락 버튼”을 눌러 매장에 지원을 요청합니다.</li>
+			<li>이때, 문제 상황(예: 주문자를 못찾겠음 등)을 간략하게 설명합니다.</li>
 			</ul>
 			<button className="action-button" onClick={toggleManual}>
 			닫기
@@ -313,7 +317,7 @@ function DeliveryApp() {
 			case 3:
 				return (
 					<div className="content">
-					<h2 className="delivery-title">수령인 거리 확인</h2>
+					<h2 className="delivery-title">주문자 거리 확인</h2>
 					<p className="info-text">
 					{distance !== null
 						? `남은 거리: ${distance}m`
@@ -323,7 +327,12 @@ function DeliveryApp() {
 					className="action-button"
 					onClick={handleButtonClick(() => setScreen(4))}
 					>
-					배달 완료
+					찾았어요!
+					</button>
+					<button
+					className="action-button2"
+					>
+					찾지 못했어요!
 					</button>
 					</div>
 				);

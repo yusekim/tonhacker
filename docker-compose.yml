@@ -1,7 +1,7 @@
 services:
   frontend:
     init: true
-    build: ./nginx
+    build: ./frontend
     image: myreact
     container_name: front
     ports:
@@ -10,7 +10,7 @@ services:
       CLIENT_KEY: ${CLIENT_KEY}
       CLIENT_SECRET: ${CLIENT_SECRET}
     volumes:
-      - ./nginx/srcs:/myreact/src
+      - ./frontend/srcs:/myreact/src
     networks:
       - hack
     depends_on:

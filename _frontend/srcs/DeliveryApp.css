@@ -102,6 +102,19 @@
 	transition: background-color 0.2s ease;
 	font-size: 1rem;
   }
+  /* 버튼 스타일 */
+  .action-button2 {
+	padding: 10px 16px;
+	position: absolute;
+	right: 10px; /* 필요에 따라 조정 */
+	border: none;
+	background-color: #ff0400;
+	color: white;
+	cursor: pointer;
+	border-radius: 4px;
+	transition: background-color 0.2s ease;
+	font-size: 1rem;
+  }
 
   .action-button:hover {
 	background-color: #0056b3;

@@ -1,12 +1,13 @@
-FROM nginx:stable-alpine
+FROM alpine:latest
 
 RUN apk --update add nodejs npm git build-base python3
 RUN npx create-react-app myreact --yes --no-git
 
-COPY ./index.html /myreact/public
-COPY ./nginx.conf /etc/nginx/nginx.conf
-
 COPY ./entrypoint.sh /usr/bin/entrypoint.sh
 RUN chmod +x /usr/bin/entrypoint.sh
+
+WORKDIR /myreact
+
+COPY ./index.html ./public
 
 ENTRYPOINT [ "entrypoint.sh" ]
