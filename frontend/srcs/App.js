@@ -310,24 +310,35 @@ function DeliveryApp() {
 					/>
 					</div>
 				);
-			case 3:
-				return (
-					<div className="content">
-					<h2 className="delivery-title">수령인 거리 확인</h2>
-					<p className="info-text">
-					{distance !== null
-						? `남은 거리: ${distance}m`
-						: "위치 정보를 가져오는 중..."}
-					</p>
-					<button
-					className="action-button"
-					onClick={handleButtonClick(() => setScreen(4))}
-					>
-					배달 완료
-					</button>
-					</div>
-				);
-			case 4:
+				case 3:
+					return (
+					  <div className="content">
+						<h2 className="delivery-title">수령인 거리 확인</h2>
+						<p className="info-text">
+						  {distance !== null
+							? `남은 거리: ${distance}m`
+							: "위치 정보를 가져오는 중..."}
+						</p>
+						<div className="button-group">
+						  <button
+							className="action-button found"
+							onClick={handleButtonClick(() => setScreen(4))}
+						  >
+							찾았어요!
+						  </button>
+						  <button
+							className="action-button not-found"
+							onClick={handleButtonClick(() => {
+							  // '못찾겠어요..' 버튼 클릭 시의 동작 정의
+							  console.log("주문자를 찾지 못했습니다.");
+							})}
+						  >
+							못찾겠어요..
+						  </button>
+						</div>
+					  </div>
+					);
+				case 4:
 				return (
 					<div className="map-content">
 					<h2 className="delivery-title">복귀 경로</h2>
